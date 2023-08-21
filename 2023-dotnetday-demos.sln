@@ -1,0 +1,47 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.31903.59
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "dotnet-crystals", "dotnet-crystals\dotnet-crystals.csproj", "{77039F0B-AB51-45C2-835C-5AD9B30E90F3}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "strathweb-dilithium", "strathweb-dilithium", "{C3A208BE-4A88-4C1C-A204-EFC1E6D12C44}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConsoleClient", "strathweb-dilithium\ConsoleClient\ConsoleClient.csproj", "{28B6B3A1-DCFA-4557-B8F5-E90F46286DD5}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IdentityServer", "strathweb-dilithium\IdentityServer\IdentityServer.csproj", "{26C304D3-ED70-469A-B2F5-C1F7D29D7D30}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SampleApi", "strathweb-dilithium\SampleApi\SampleApi.csproj", "{E9559299-3319-4646-ABC3-FB5809ED8174}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{77039F0B-AB51-45C2-835C-5AD9B30E90F3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{77039F0B-AB51-45C2-835C-5AD9B30E90F3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{77039F0B-AB51-45C2-835C-5AD9B30E90F3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{77039F0B-AB51-45C2-835C-5AD9B30E90F3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{28B6B3A1-DCFA-4557-B8F5-E90F46286DD5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{28B6B3A1-DCFA-4557-B8F5-E90F46286DD5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{28B6B3A1-DCFA-4557-B8F5-E90F46286DD5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{28B6B3A1-DCFA-4557-B8F5-E90F46286DD5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{26C304D3-ED70-469A-B2F5-C1F7D29D7D30}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{26C304D3-ED70-469A-B2F5-C1F7D29D7D30}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{26C304D3-ED70-469A-B2F5-C1F7D29D7D30}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{26C304D3-ED70-469A-B2F5-C1F7D29D7D30}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E9559299-3319-4646-ABC3-FB5809ED8174}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E9559299-3319-4646-ABC3-FB5809ED8174}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E9559299-3319-4646-ABC3-FB5809ED8174}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E9559299-3319-4646-ABC3-FB5809ED8174}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{28B6B3A1-DCFA-4557-B8F5-E90F46286DD5} = {C3A208BE-4A88-4C1C-A204-EFC1E6D12C44}
+		{26C304D3-ED70-469A-B2F5-C1F7D29D7D30} = {C3A208BE-4A88-4C1C-A204-EFC1E6D12C44}
+		{E9559299-3319-4646-ABC3-FB5809ED8174} = {C3A208BE-4A88-4C1C-A204-EFC1E6D12C44}
+	EndGlobalSection
+EndGlobal

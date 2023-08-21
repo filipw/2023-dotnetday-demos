@@ -3,16 +3,36 @@ using Org.BouncyCastle.Pqc.Crypto.Crystals.Dilithium;
 using Org.BouncyCastle.Pqc.Crypto.Crystals.Kyber;
 using Org.BouncyCastle.Security;
 using Org.BouncyCastle.Utilities.Encoders;
+using Spectre.Console;
 
-RunKyber();
-RunDilithium();
+var demo = AnsiConsole.Prompt(
+    new SelectionPrompt<string>()
+        .Title("Choose the [green]demo[/] to run?")
+        .AddChoices(new[]
+        {
+            "Kyber", "Dilithium"
+        }));
+
+switch (demo)
+{
+    case "Kyber":
+        RunKyber();
+        break;
+    case "Dilithium":
+        RunDilithium();
+        break;
+    default:
+        Console.WriteLine("Nothing selected!");
+        break;
+}
 
 static void RunDilithium()
 {
-    Console.WriteLine("***************** DILITHIUM *******************");
-    var data = Hex.Encode(Encoding.ASCII.GetBytes("Hello, Dilithium!"));
-    Console.WriteLine($"Message: {PrettyPrint(data)}");
+    var rule = new Rule("[green]Dilithium[/]");
+    AnsiConsole.Write(rule);
 
+    var message = AnsiConsole.Ask<string>("Please provide a [green]message[/]?");
+    var data = Hex.Encode(Encoding.ASCII.GetBytes(message));
     var random = new SecureRandom();
     var keyGenParameters = new DilithiumKeyGenerationParameters(random, DilithiumParameters.Dilithium3);
     var dilithiumKeyPairGenerator = new DilithiumKeyPairGenerator();
@@ -25,26 +45,40 @@ static void RunDilithium()
     var privateKey = (DilithiumPrivateKeyParameters)keyPair.Private;
     var pubEncoded = publicKey.GetEncoded();
     var privateEncoded = privateKey.GetEncoded();
-    Console.WriteLine($"Public key: {PrettyPrint(pubEncoded)}");
-    Console.WriteLine($"Private key: {PrettyPrint(privateEncoded)}");
+    
+    var panel = new Panel($":unlocked: Public: {PrettyPrint(pubEncoded)}{Environment.NewLine}:locked: Private: {PrettyPrint(privateEncoded)}")
+        {
+            Header = new PanelHeader("Keys")
+        };
+    AnsiConsole.Write(panel);
 
     // sign
     var alice = new DilithiumSigner();
     alice.Init(true, privateKey);
     var signature = alice.GenerateSignature(data);
-    Console.WriteLine($"Signature: {PrettyPrint(signature)}");
+    var panel2 = new Panel($":pen: {PrettyPrint(signature)}")
+    {
+        Header = new PanelHeader("Signature")
+    };
+    AnsiConsole.Write(panel2);
 
     // verify signature
     var bob = new DilithiumSigner();
     bob.Init(false, publicKey);
     var verified = bob.VerifySignature(data, signature);
-    Console.WriteLine($"Successfully verified? {verified}");
-    Console.WriteLine("");
+    
+    var panel3 = new Panel($"{(verified ? ":check_mark_button:" : ":cross_mark:")} Verified!")
+    {
+        Header = new PanelHeader("Verification")
+    };
+    AnsiConsole.Write(panel3);
 }
 
 static void RunKyber() 
 {
-    Console.WriteLine("***************** KYBER *******************");
+    var rule = new Rule("[green]Kyber[/]");
+    AnsiConsole.Write(rule);
+    
     var random = new SecureRandom();
     var keyGenParameters = new KyberKeyGenerationParameters(random, KyberParameters.kyber768);
     var kyberKeyPairGenerator = new KyberKeyPairGenerator();
@@ -58,34 +92,40 @@ static void RunKyber()
     var alicePrivate = (KyberPrivateKeyParameters)aliceKeyPair.Private;
     var pubEncoded = alicePublic.GetEncoded();
     var privateEncoded = alicePrivate.GetEncoded();
-    Console.WriteLine($"Alice's Public key: {PrettyPrint(pubEncoded)}");
-    Console.WriteLine($"Alice's Private key: {PrettyPrint(privateEncoded)}");
+    var panel = new Panel($":unlocked: Public: {PrettyPrint(pubEncoded)}{Environment.NewLine}:locked: Private: {PrettyPrint(privateEncoded)}")
+    {
+        Header = new PanelHeader("Alice's keys")
+    };
+    AnsiConsole.Write(panel);
 
     // Bob encapsulates a new shared secret using Alice's public key
     var bobKyberKemGenerator = new KyberKemGenerator(random);
     var encapsulatedSecret = bobKyberKemGenerator.GenerateEncapsulated(alicePublic);
     var bobSecret = encapsulatedSecret.GetSecret();
-    Console.WriteLine($"Bob's Secret: {PrettyPrint(bobSecret)}");
 
     // cipher text produced by Bob and sent to Alice
     var cipherText = encapsulatedSecret.GetEncapsulation();
-    Console.WriteLine($"Cipher text: {PrettyPrint(cipherText)}");
 
     // Alice decapsulates a new shared secret using Alice's private key
     var aliceKemExtractor = new KyberKemExtractor(alicePrivate);
     var aliceSecret = aliceKemExtractor.ExtractSecret(cipherText);
-    Console.WriteLine($"Alice's Secret: {PrettyPrint(aliceSecret)}");
+    
+    var panel2 = new Panel($":man: Bob's secret: {PrettyPrint(bobSecret)}{Environment.NewLine}:locked_with_key: Cipher text (Bob -> Alice): {PrettyPrint(cipherText)}{Environment.NewLine}:woman: Alice's secret: {PrettyPrint(aliceSecret)}")
+    {
+        Header = new PanelHeader("KEM")
+    };
+    AnsiConsole.Write(panel2);
 
     // Compare secrets
     var equal = bobSecret.SequenceEqual(aliceSecret);
-    Console.WriteLine($"Secrets equal? {equal}");
-    Console.WriteLine("");
+    var panel3 = new Panel($"{(equal ? ":check_mark_button:" : ":cross_mark:")} Secrets equal!")
+    {
+        Header = new PanelHeader("Verification")
+    };
+    AnsiConsole.Write(panel3);
 }
 
 static string PrettyPrint(byte[] bytes) {
     var base64 = Convert.ToBase64String(bytes);
-    if (base64.Length > 50)
-        return $"{base64[..25]}...{base64[^25..]}";
-
-    return base64;
+    return base64.Length > 50 ? $"{base64[..25]}...{base64[^25..]}" : base64;
 }

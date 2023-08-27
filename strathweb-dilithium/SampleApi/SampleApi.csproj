@@ -7,7 +7,6 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="Duende.IdentityServer" Version="6.2.0" />
         <PackageReference Include="Strathweb.Dilithium.AspNetCore" Version="0.1.0" />
     </ItemGroup>
 </Project>

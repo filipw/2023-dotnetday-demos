@@ -20,7 +20,6 @@ internal static class HostingExtensions
         var jwk = JsonSerializer.Deserialize<JsonWebKey>(rawJwk);
 
         builder.Services.AddIdentityServer(opt => opt.EmitStaticAudienceClaim = true)
-            //.AddDilithiumSigningCredential(new DilithiumSecurityKey("CRYDI3")) // new key per startup
             .AddDilithiumSigningCredential(new DilithiumSecurityKey(jwk)) // key from the filesystem
             .AddInMemoryApiScopes(Config.ApiScopes)
             .AddInMemoryApiResources(Config.ApiResources)
